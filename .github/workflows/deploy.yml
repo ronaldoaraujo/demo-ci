@@ -1,0 +1,20 @@
+on: push
+name: deploy
+jobs:
+  deploy:
+    name: deploy to cluster
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: deploy to cluster
+      uses: rsooo/kubectl@v1.0.1
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: set image --record deployment/notification-service -n notification-service-production notification-service=571361976584.dkr.ecr.sa-east-1.amazonaws.com/agrosmart/notification-service:0.0.11
+    - name: verify deployment
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: '"rollout status deployment/notification-service -n notification-service-production"'
