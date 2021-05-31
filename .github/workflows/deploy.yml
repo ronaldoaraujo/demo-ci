@@ -7,13 +7,13 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: deploy to cluster
-      uses: steebchen/kubectl@v1.0.1
+      uses: rsooo/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         args: set image --record deployment/notification-service -n notification-service-production notification-service=571361976584.dkr.ecr.sa-east-1.amazonaws.com/agrosmart/notification-service:0.0.11
     - name: verify deployment
-      uses: steebchen/kubectl@master
+      uses: rsooo/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
